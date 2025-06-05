@@ -19,22 +19,26 @@ int	main(int ac, char **av)
 	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
 	fw_f = i;
-	while (str[i] && (str[i] != ' ' || str[i] == '\t'))
+	while (str[i] && (str[i] != ' ' || str[i] != '\t'))
 		i++;
 	fw_l = i;
 	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
 	while (str[i])
 	{
+		write(1, &str[i], 1);
+		i++;
 		if (str[i] == ' ' || str[i] == '\t')
 		{
 			while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 				i++;
-			if (str[i] != ' ' || str[i] != '\t' || str[i] != '\0')
-				write(1, " ", 1);
+			write(1, " ", 1);
 		}
-		flag = 1;
-		write(1, &str[i++], 1);
+		else if (str[i] == '\0')
+		{
+			flag = 1;
+			break ;
+		}
 	}
 	if (flag == 1)
 		write(1, " ", 1);
