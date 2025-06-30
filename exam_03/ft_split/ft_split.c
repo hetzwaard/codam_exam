@@ -25,10 +25,19 @@ char	**ft_split(char *str)
 	return (res);
 }
 
-// #include <stdio.h>
+//#include <stdio.h>
+//int	main()
+//{
+//	char *str = " - ";
+//	char **arr = ft_split(str);
 
-// int main() {
-//     char **arr = ft_split(" \n \t Hello  world  42 ");
-//     for (int i = 0; arr[i]; i++)
-//         printf("word[%d]: %s\n", i, arr[i]);
+
+//	for (int i = 0; arr[i]; i++) {
+
+//		printf("arr = %s\n", arr[i]);
+//		//printf("arr1 = %s\n", i, arr1[i]);
+//		//printf("arr2 = %s\n", i, arr2[i]);
+//	}
+
+//	return (0);
 // }
