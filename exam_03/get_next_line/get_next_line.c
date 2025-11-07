@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 100
+#define BUFFER_SIZE 1
 #endif
 
 // works and passed!
@@ -13,11 +13,7 @@ char	*get_next_line(int fd)
 {
 	char *s = malloc(1000000), *c = s;
 	while (read(fd, c, BUFFER_SIZE))
-	{
-		if (*c == '\0')
-			break ;
 		c += BUFFER_SIZE;
-	}
 	return c > s ? (*c = 0, s) : (free(s), NULL);
 }
 
