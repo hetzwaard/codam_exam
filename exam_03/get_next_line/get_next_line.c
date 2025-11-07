@@ -12,15 +12,10 @@
 char	*get_next_line(int fd)
 {
 	char *s = malloc(1000000), *c = s;
-	int i = 0;
-	while (BUFFER_SIZE >= i && *c != '\n')
+	while (read(fd, c, BUFFER_SIZE))
 	{
-		read(fd, c, BUFFER_SIZE);
 		if (*c == '\0')
-		{
-			i++;
 			break ;
-		}
 		c += BUFFER_SIZE;
 	}
 	return c > s ? (*c = 0, s) : (free(s), NULL);
