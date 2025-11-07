@@ -7,6 +7,8 @@
 #define BUFFER_SIZE 100
 #endif
 
+// works and passed!
+
 char	*get_next_line(int fd)
 {
 	char *s = malloc(1000000), *c = s;
