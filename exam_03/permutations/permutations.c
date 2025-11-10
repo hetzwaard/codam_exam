@@ -1,75 +1,47 @@
-#include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-void	ft_putstr(char *str)
-{
-	int i = 0;
-	while (str[i])
-	{
-		write(1, &str[i++], 1);
-	}
-	write(1, "\n", 1);
-}
-
 int	ft_strlen(char *str)
 {
-	int i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	int i = 0; while (str[i]) i++; return (i);
 }
 
-void	ft_swap(char *a, char *b)
+void	perm(int *cnt, int n, int depth, char *buf)
 {
-	char tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
+	int	c = 0;
 
-void	ft_sort(char *str, int len)
-{
-	int i = 0;
-	while (i < len - 1)
+	if (depth == n)
 	{
-		int j = 0;
-		while (j < len - i - 1)
+		buf[n] = '\0';
+		puts(buf);
+		return;
+	}
+	while (c < 256)
+	{
+		if (cnt[c])
 		{
-			if (str[j] > str[j + 1])
-				ft_swap(&str[j], &str[j + 1]);
-			j++;
+			buf[depth] = c;
+			--cnt[c];
+			perm(cnt, n, depth + 1, buf);
+			++cnt[c];
 		}
-		i++;
+		c++;
 	}
 }
 
-int	ft_next_permutation(char *str, int len)
+int	main(int ac, char **av)
 {
-	int i = len - 2;
-	while (i >= 0 && str[i] >= str[i + 1])
-		i--;
-	if (i < 0)
-		return (0);
-	int j = len - 1;
-	while (str[j] <= str[i])
-		j--;
-	ft_swap(&str[i], &str[j]);
-	int start = i + 1;
-	int end = len - 1;
-	while (start < end)
-		ft_swap(&str[start++], &str[end--]);
-	return (1);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc != 2)
-		return (1);
-	char *str = argv[1];
-	int	len = ft_strlen(str);
-	ft_sort(str, len);
-	ft_putstr(str);
-	while (ft_next_permutation(str, len))
-		ft_putstr(str);
-	return (0);
+	if (ac == 2 && av[1][0])
+	{
+		int		n = ft_strlen(av[1]);
+		int		cnt[256] = {0};
+		char	*buf = malloc(n + 1);
+		int		i = 0;
+		while (i < n)
+			++cnt[av[1][i++]];
+		perm(cnt, n, 0, buf);
+		free(buf);
+	}
+	return 0;
 }
