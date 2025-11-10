@@ -1,10 +1,12 @@
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 int	ft_strlen(char *str)
 {
-	int i = 0; while (str[i]) i++; return (i);
+	int i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
 void	perm(int *cnt, int n, int depth, char *buf)
