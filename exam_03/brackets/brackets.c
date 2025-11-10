@@ -1,65 +1,45 @@
 #include <unistd.h>
 
-#define OPEN_PAN '('
-#define CLOSED_PAN ')'
-#define OPEN_SQU '['
-#define CLOSED_SQU ']'
-#define OPEN_CUR '{'
-#define CLOSED_CUR '}'
-
-int	is_open(int c)
+static int	match_brackets(char a, char b)
 {
-	return (c == OPEN_PAN || c == OPEN_SQU || c == OPEN_CUR);
+	return ((a == '(' && b == ')')
+		 || (a == '[' && b == ']')
+		 || (a == '{' && b == '}'));
 }
 
-int	is_closed(int c)
+static int	check_brackets(char *str)
 {
-	return (c == CLOSED_PAN || c == CLOSED_SQU || c == CLOSED_CUR);
-}
+	int	i;
+	int	top;
+	int	stack[100000];
 
-int	matching(char *str)
-{
-	int	stack[1000];
-	int	top = 0;
-	int	i = 0;
-
+	i = 0;
+	top = 0;
 	while (str[i])
 	{
-		if (is_open(str[i]))
-			stack[top++] = str[i];
-		else if (is_closed(str[i]))
-		{
-			if (top == 0
-			|| (str[i] == OPEN_PAN && stack[top] != CLOSED_PAN)
-			|| (str[i] == OPEN_SQU && stack[top] != CLOSED_SQU)
-			|| (str[i] == OPEN_CUR && stack[top] != CLOSED_CUR))
+		if (str[i] == '(' || str[i] == '{' || str[i] == '[')
+			stack[++top] = str[i];
+		if (str[i] == ')' || str[i] == '}' || str[i] == ']')
+			if (!match_brackets(stack[top--], str[i]))
 				return (0);
-			else
-				top--;
-		}
-		i++;
+		i += 1;
 	}
-	return (1);
+	return (!top);
 }
 
-void	parse(char **argv)
+int	main(int argc, char *argv[])
 {
-	int i = 1;
-	while (argv[i])
+	int i;
+
+	i = 0;
+	if (argc == 1)
+		write(1, "\n", 1);
+	while (--argc)
 	{
-		if (matching(argv[i]))
+		if (check_brackets(argv[++i]))
 			write(1, "OK\n", 3);
 		else
 			write(1, "Error\n", 6);
-		i++;
 	}
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc > 1)
-		parse(argv);
-	else
-		write(1, "\n", 1);
 	return (0);
 }
