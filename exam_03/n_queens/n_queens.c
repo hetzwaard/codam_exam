@@ -9,50 +9,50 @@ int	absolute(int n)
 	return (n);
 }
 
-int	safe(int *board, int column, int row)
+int	safe(int *g, int x, int y)
 {
 	int	prev = 0;
 
-	while (prev < column)
+	while (prev < x)
 	{
-		if (board[prev] == row)
+		if (g[prev] == y)
 			return (0);
-		if (absolute(board[prev] - row) == column - prev)
+		if (absolute(g[prev] - y) == x - prev)
 			return (0);
 		prev++;
 	}
 	return (1);
 }
 
-void	print(int *board, int n_queens)
+void	print(int *g, int n)
 {
 	int	i = 0;
-	while (i < n_queens)
+	while (i < n)
 	{
-		fprintf(stdout, "%d", board[i]);
-		if (i < n_queens - 1)
+		fprintf(stdout, "%d", g[i]);
+		if (i < n - 1)
 			fprintf(stdout, " ");
 		i++;
 	}
 	fprintf(stdout, "\n");
 }
 
-void	solve(int *board, int column, int n_queens)
+void	solve(int *g, int x, int n)
 {
-	int	row = 0;
-	if (column == n_queens)
+	int	y = 0;
+	if (x == n)
 	{
-		print(board, n_queens);
+		print(g, n);
 		return ;
 	}
-	while (row < n_queens)
+	while (y < n)
 	{
-		if (safe(board, column, row))
+		if (safe(g, x, y))
 		{
-			board[column] = row;
-			solve(board, column + 1, n_queens);
+			g[x] = y;
+			solve(g, x + 1, n);
 		}
-		row++;
+		y++;
 	}
 }
 
@@ -60,8 +60,8 @@ int	 main(int argc, char **argv)
 {
 	if (argc != 2)
 		return (0);
-	int	n_queens = atoi(argv[1]);
-	int	*board = malloc(sizeof(int) * n_queens);
-	solve(board, 0, n_queens);
-	return (free(board), 0);
+	int	n = atoi(argv[1]);
+	int	*g = malloc(sizeof(int) * n);
+	solve(g, 0, n);
+	return (free(g), 0);
 }
