@@ -17,9 +17,9 @@ static int	check_brackets(char *str)
 	top = 0;
 	while (str[i])
 	{
-		if (str[i] == '(' || str[i] == '{' || str[i] == '[')
+		if (str[i] == '(' || str[i] == '[' || str[i] == '{')
 			stack[++top] = str[i];
-		if (str[i] == ')' || str[i] == '}' || str[i] == ']')
+		if (str[i] == ')' || str[i] == ']' || str[i] == '}')
 			if (!match_brackets(stack[top--], str[i]))
 				return (0);
 		i += 1;
