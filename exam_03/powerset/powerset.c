@@ -1,28 +1,51 @@
-#include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+void	print_subset(int *subset, int size)
+{
+	int i = 0;
+	while (i < size)
+	{
+		if (i > 0)
+			printf(" ");
+		printf("%d", subset[i]);
+		i++;
+	}
+	printf("\n");
+}
+
+void	backtrack(int *arr, int n, int target, int idx, int *subset, int sub_size, int sum)
+{
+	if (idx == n)
+	{
+		if (sum == target)
+			print_subset(subset, sub_size);
+		return ;
+	}
+	backtrack(arr, n, target, idx + 1, subset, sub_size, sum);
+	subset[sub_size] = arr[idx];
+	backtrack(arr, n, target, idx + 1, subset, sub_size + 1, sum + arr[idx]);
+}
 
 int main(int ac, char **av)
 {
 	if (ac < 2)
 		return (0);
-	int k = ac - 2, target = atoi(av[1]), found = 0;
-	for (unsigned long m = 1; m < (1UL << k); ++m)
+
+	int target = atoi(av[1]);
+	int n = ac - 2;
+	int *arr = malloc(n * 4);
+	int *subset = malloc(n * 4);
+
+	if (!arr || !subset)
+		return (1);
+	
+	int i = 0;
+	while (i < n)
 	{
-		int sum = 0;
-		for (int i = 0; i < k; i++)
-			if (m & (1UL << i))
-				sum += atoi(av[i + 2]);
-		if (sum == target)
-		{
-			found = 1;
-			for (int i = 0; i < k; i++)
-				if (m & (1UL << i))
-					printf("%s%s", (i && m & ((1UL << i) - 1)) ? " " : "", av[i + 2]);
-			printf("\n");
-		}
+		arr[i] = atoi(av[i + 2]);
+		i++;
 	}
-	if (!found)
-		printf("\n");
-	return 0;
+	backtrack(arr, n, target, 0, subset, 0, 0);
+	return (free(arr), free(subset), 0);
 }
