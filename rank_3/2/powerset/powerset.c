@@ -1,30 +1,29 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-void	print_subset(int *subset, int size)
+void	print_subset(int *subset, int sub_size)
 {
 	int i = 0;
-	while (i < size)
+	while (i < sub_size)
 	{
 		if (i > 0)
 			printf(" ");
-		printf("%d", subset[i]);
-		i++;
+		printf("%d", subset[i++]);
 	}
 	printf("\n");
 }
 
-void	backtrack(int *arr, int n, int target, int idx, int *subset, int sub_size, int sum)
+void	backtrack(int target, int n, int *arr, int *subset, int sub_size, int index, int sum)
 {
-	if (idx == n)
+	if (index == n)
 	{
-		if (sum == target)
+		if (target == sum)
 			print_subset(subset, sub_size);
 		return ;
 	}
-	backtrack(arr, n, target, idx + 1, subset, sub_size, sum);
-	subset[sub_size] = arr[idx];
-	backtrack(arr, n, target, idx + 1, subset, sub_size + 1, sum + arr[idx]);
+	backtrack(target, n, arr, subset, sub_size, index + 1, sum);
+	subset[sub_size] = arr[index];
+	backtrack(target, n, arr, subset, sub_size + 1, index + 1, sum + arr[index]);
 }
 
 int main(int ac, char **av)
@@ -39,13 +38,13 @@ int main(int ac, char **av)
 
 	if (!arr || !subset)
 		return (1);
-	
+
 	int i = 0;
 	while (i < n)
 	{
 		arr[i] = atoi(av[i + 2]);
 		i++;
 	}
-	backtrack(arr, n, target, 0, subset, 0, 0);
+	backtrack(target, n, arr, subset, 0, 0, 0);
 	return (free(arr), free(subset), 0);
 }

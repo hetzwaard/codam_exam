@@ -9,41 +9,41 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void	perm(int *cnt, int n, int depth, char *buf)
+void	perm(int *count, int len, char *buffer, int depth)
 {
-	int	c = 0;
+	int c = 0;
 
-	if (depth == n)
+	if (depth == len)
 	{
-		buf[n] = '\0';
-		puts(buf);
-		return;
+		buffer[len] = '\0';
+		puts(buffer);
+		return ;
 	}
 	while (c < 256)
 	{
-		if (cnt[c])
+		if (count[c])
 		{
-			buf[depth] = c;
-			--cnt[c];
-			perm(cnt, n, depth + 1, buf);
-			++cnt[c];
+			buffer[depth] = c;
+			--count[c];
+			perm(count, len, buffer, depth + 1);
+			++count[c];
 		}
 		c++;
 	}
 }
 
-int	main(int ac, char **av)
+int main(int ac, char **av)
 {
-	if (ac == 2 && av[1][0])
-	{
-		int		n = ft_strlen(av[1]);
-		int		cnt[256] = {0};
-		char	*buf = malloc(n + 1);
-		int		i = 0;
-		while (i < n)
-			++cnt[av[1][i++]];
-		perm(cnt, n, 0, buf);
-		free(buf);
-	}
-	return 0;
+	if (ac != 2)
+		return (0);
+
+	int count[256] = {0};
+	int len = ft_strlen(av[1]);
+	char *buffer = malloc(len + 1);
+
+	int i = 0;
+	while (i < len)
+		++count[av[1][i++]];
+	perm(count, len, buffer, 0);
+	return (free(buffer), 0);
 }

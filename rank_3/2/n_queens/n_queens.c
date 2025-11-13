@@ -1,6 +1,6 @@
+#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 int	absolute(int n)
 {
@@ -11,8 +11,7 @@ int	absolute(int n)
 
 int	safe(int *g, int x, int y)
 {
-	int	prev = 0;
-
+	int prev = 0;
 	while (prev < x)
 	{
 		if (g[prev] == y)
@@ -24,10 +23,10 @@ int	safe(int *g, int x, int y)
 	return (1);
 }
 
-void	print(int *g, int n)
+void	print(int n, int *g)
 {
-	int	i = 0;
-	while (i < n)
+	int i = 0;
+	while(i < n)
 	{
 		fprintf(stdout, "%d", g[i]);
 		if (i < n - 1)
@@ -37,31 +36,31 @@ void	print(int *g, int n)
 	fprintf(stdout, "\n");
 }
 
-void	solve(int *g, int x, int n)
+void	solve(int n, int *g, int x, int y)
 {
-	int	y = 0;
 	if (x == n)
 	{
-		print(g, n);
+		print(n, g);
 		return ;
 	}
-	while (y < n)
+	y = 0;
+	while(y < n)
 	{
 		if (safe(g, x, y))
 		{
 			g[x] = y;
-			solve(g, x + 1, n);
+			solve(n, g, x + 1, y);
 		}
 		y++;
 	}
 }
 
-int	 main(int argc, char **argv)
+int main(int ac, char **av)
 {
-	if (argc != 2)
+	if (ac != 2)
 		return (0);
-	int	n = atoi(argv[1]);
-	int	*g = malloc(sizeof(int) * n);
-	solve(g, 0, n);
+	int n = atoi(av[1]);
+	int *g = malloc(n * 4);
+	solve(n, g, 0, 0);
 	return (free(g), 0);
 }

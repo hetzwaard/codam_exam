@@ -1,45 +1,42 @@
 #include <unistd.h>
 
-static int	match_brackets(char a, char b)
+int	match(char a, char b)
 {
-	return ((a == '(' && b == ')')
-		 || (a == '[' && b == ']')
-		 || (a == '{' && b == '}'));
+	return	(a == '(' && b == ')' ||
+				 a == '[' && b == ']' ||
+				 a == '{' && b == '}');
 }
 
-static int	check_brackets(char *str)
+int	checker(char *av)
 {
-	int	i;
-	int	top;
-	int	stack[100000];
+	int i = 0;
+	int stack[10000];
+	int top = 0;
 
-	i = 0;
-	top = 0;
-	while (str[i])
+	while (av[i])
 	{
-		if (str[i] == '(' || str[i] == '[' || str[i] == '{')
-			stack[++top] = str[i];
-		if (str[i] == ')' || str[i] == ']' || str[i] == '}')
-			if (!match_brackets(stack[top--], str[i]))
+		if (av[i] == '(' || av[i] == '[' || av[i] == '{')
+			stack[top++] = av[i];
+		if (av[i] == ')' || av[i] == ']' || av[i] == '}')
+			if (!match(stack[--top], av[i]))
 				return (0);
-		i += 1;
+		i++;
 	}
 	return (!top);
 }
 
-int	main(int argc, char *argv[])
+int main(int ac, char **av)
 {
-	int i;
-
-	i = 0;
-	if (argc == 1)
-		write(1, "\n", 1);
-	while (--argc)
+	if (ac < 2)
+		return (write(1, "\n", 1), 0);
+	int i = 1;
+	while (i < ac)
 	{
-		if (check_brackets(argv[++i]))
+		if (checker(av[i]))
 			write(1, "OK\n", 3);
 		else
 			write(1, "Error\n", 6);
+		i++;
 	}
 	return (0);
 }
