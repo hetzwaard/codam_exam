@@ -1,63 +1,63 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int check(char *s)
+int check(char *a)
 {
-	int n = 0;
-	int i = 0;
-	while (s[i])
+	int b = 0;
+	int c = 0;
+	while (a[b])
 	{
-		if (s[i] == '(')
-			n++;
-		if (s[i] == ')')
+		if (a[b] == '(')
+			c++;
+		if (a[b] == ')')
 		{
-			if (n)
-				n--;
+			if (c)
+				c--;
 			else
 				return 0;
 		}
-		i++;
+		b++;
 	}
-	return n == 0;
+	return c == 0;
 }
 
-int need(char *s)
+int need(char *a)
 {
-	int o = 0;
+	int b = 0;
 	int c = 0;
-	int i = 0;
-	while (s[i])
+	int d = 0;
+	while (a[b])
 	{
-		if (s[i] == '(')
-			o++;
-		if (s[i] == ')')
+		if (a[b] == '(')
+			c++;
+		if (a[b] == ')')
 		{
-			if (o)
-				o--;
+			if (c)
+				c--;
 			else
-				c++;
+				d++;
 		}
-		i++;
+		b++;
 	}
-	return o + c;
+	return c + d;
 }
 
-void solve(char *s, int fix, int pos, int must)
+void solve(char *a, int b, int c, int d)
 {
-	if (fix == must)
+	if (b == d)
 	{
-		if (check(s))
-			puts(s);
+		if (check(a))
+			puts(a);
 			return;
 	}
-	for (int i = pos; s[i]; i++)
+	for (int i = c; a[i]; i++)
 	{
-		char t = s[i];
-		if (t == '(' || t == ')')
+		char e = a[i];
+		if (e == '(' || e == ')')
 		{
-			s[i] = ' ';
-			solve(s, fix + 1, i + 1, must);
-			s[i] = t;
+			a[i] = ' ';
+			solve(a, b + 1, i + 1, d);
+			a[i] = e;
 		}
 	}
 }
